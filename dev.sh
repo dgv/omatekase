@@ -1,3 +1,5 @@
+# setup docker
+
 # packages to install
 sudo apt update; sudo DEBIAN_FRONTEND=noninteractive apt install build-essential btop \
 lazygit git-gui git-lfs mtr-tiny wireshark meld telnet tcpdump valgrind strace gdb minicom \
