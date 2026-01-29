@@ -89,7 +89,7 @@ library-photos-sort-ascending=false
 library-photos-sort-by=2
 show-welcome-dialog=true
 sidebar-position=180
-
+fidf
 [org/gnome/shotwell/preferences/window]
 direct-height=1024
 direct-maximize=false
