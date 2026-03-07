@@ -31,6 +31,8 @@ gparted blueman network-manager arc-theme yubikey-manager abiword gnumeric \
 fastfetch plymouth geary libavcodec-extra ttf-mscorefonts-installer gdebi \
 gstreamer1.0-libav gstreamer1.0-plugins-ugly firmware-misc-nonfree rclone \
 unrar xpad rofi fonts-jetbrains-mono libimobiledevice-utils usbmuxd ipheth-utils \
+firmware-iwlwifi wpasupplicant openssh-server \
+firmware-amd-graphics libgl1-mesa-dri libglx-mesa0 mesa-vulkan-drivers xserver-xorg-video-all \
 ifuse android-tools-adb android-tools-fastboot network-manager-applet dconf-cli -y
 
 # install plymouth
@@ -41,7 +43,7 @@ sed -i 's/Theme=ceratopsian/Theme=simplefuture/g' /usr/share/plymouth/plymouthd.
 update-grub; update-initramfs -u -k all
 
 # setup login dm
-sed -i 's/^#greeter-session=.*$/greeter-session=slick-greeter/g' /etc/lightdm/lightdm.conf
+sed -i 's/^[#g]reeter-session=.*$/greeter-session=slick-greeter/g' /etc/lightdm/lightdm.conf
 rm /usr/share/xsessions/lightdm-xsession.desktop
 /usr/sbin/adduser $SUSER sudo
 cat << EOF > /etc/lightdm/slick-greeter.conf
@@ -55,6 +57,7 @@ EOF
 
 # fetch config/theme
 rm -rf /home/$SUSER/.config; su $SUSER -c 'git clone https://github.com/dgv/ombian -b dotfiles /home/$SUSER/.config'
+su $SUSER -c 'mkdir -p ~/.local/usr/share'; mv /home/$SUSER/.config/fonts /home/$SUSER/.local/user/share/
 mv /home/$SUSER/.config/*.png /usr/share/images/desktop-base/
 su $SUSER -c 'dconf load / < ~/.config/dconf.backup'
 
