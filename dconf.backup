@@ -8,6 +8,21 @@ lock-on-suspend=true
 [com/solus-project/brisk-menu]
 dark-theme=false
 
+[desktop/ibus/general]
+preload-engines=['xkb:br::por']
+version='1.5.32'
+
+[desktop/ibus/panel]
+custom-font='Sans 8'
+show-icon-on-systray=false
+use-custom-font=false
+
+[org/blueman/general]
+window-properties=[583, 350, 1237, 479]
+
+[org/blueman/plugins/recentconns]
+
+
 [org/gnome/desktop/background]
 color-shading-type='solid'
 picture-options='zoom'
@@ -56,6 +71,19 @@ num-workspaces=2
 [org/gnome/evolution-data-server]
 migrated=true
 
+[org/gnome/meld/window-state]
+height=311
+is-maximized=true
+width=621
+
+[org/gnome/nm-applet/eap/5a3d051d-a14b-45a8-be6a-cc8604fe9cfb]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
+[org/gnome/nm-applet/eap/a84009ee-12bb-4c26-b2be-8e3e3da94329]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
 [org/gnome/settings-daemon/plugins/media-keys]
 custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']
 home=['<Super>e']
@@ -89,7 +117,7 @@ library-photos-sort-ascending=false
 library-photos-sort-by=2
 show-welcome-dialog=true
 sidebar-position=180
-fidf
+
 [org/gnome/shotwell/preferences/window]
 direct-height=1024
 direct-maximize=false
@@ -113,7 +141,7 @@ sort-column='name'
 sort-directories-first=false
 sort-order='ascending'
 type-format='category'
-window-position=(412, 112)
+window-position=(662, 160)
 window-size=(1096, 856)
 
 [org/mate/caja/list-view]
@@ -125,8 +153,8 @@ always-use-location-entry=true
 thumbnail-limit=uint64 4294967295
 
 [org/mate/caja/window-state]
-geometry='949x652+485+186'
-maximized=false
+geometry='1469x594+254+393'
+maximized=true
 start-with-location-bar=true
 start-with-sidebar=true
 start-with-status-bar=true
@@ -188,6 +216,14 @@ action='rofi -show drun -show-icons'
 binding='<Primary>space'
 name='rofi'
 
+[org/mate/desktop/media-handling]
+autorun-x-content-ignore=@as []
+autorun-x-content-open-folder=@as []
+autorun-x-content-start-app=['x-content/software', 'x-content/video-bluray.xml', 'x-content/video-dvd.xml', 'x-content/video-hddvd.xml', 'x-content/video-svcd.xml', 'x-content/video-vcd.xml']
+
+[org/mate/desktop/peripherals/keyboard]
+numlock-state='off'
+
 [org/mate/desktop/peripherals/keyboard/indicator]
 foreground-color='0 0 0'
 
@@ -207,14 +243,14 @@ cursor-size=24
 cursor-theme='Breeze_Light'
 
 [org/mate/desktop/session]
-session-start=1769136371
+session-start=1772659943
 
 [org/mate/desktop/sound]
 event-sounds=true
 theme-name='freedesktop'
 
 [org/mate/engrampa/dialogs/batch-add]
-default-extension='.tar.gz'
+default-extension='.tar'
 
 [org/mate/engrampa/general]
 encrypt-header=false
@@ -222,18 +258,21 @@ unar-open-zip=false
 
 [org/mate/engrampa/listing]
 list-mode='as-folder'
+name-column-width=250
 show-path=false
 sort-method='name'
 sort-type='ascending'
 
 [org/mate/engrampa/ui]
 sidebar-width=200
-window-height=480
-window-width=600
+window-height=650
+window-width=811
 
 [org/mate/eom/ui]
 image-collection=false
 sidebar=false
+statusbar=false
+toolbar=false
 
 [org/mate/marco/general]
 action-double-click-titlebar='toggle_maximize'
@@ -251,7 +290,7 @@ popup-location='bottom_right'
 theme='slider'
 
 [org/mate/panel/general]
-object-id-list=['workspace-switcher', 'object-1', 'object-9', 'object-11', 'object-2', 'object-5', 'object-3']
+object-id-list=['workspace-switcher', 'object-1', 'object-9', 'object-11', 'object-2', 'object-3']
 toplevel-id-list=['bottom']
 
 [org/mate/panel/objects/object-1]
@@ -308,14 +347,6 @@ position=118
 relative-to-edge='end'
 toplevel-id='bottom'
 
-[org/mate/panel/objects/object-5]
-applet-iid='IndicatorAppletCompleteFactory::IndicatorAppletComplete'
-locked=true
-object-type='applet'
-position=111
-relative-to-edge='end'
-toplevel-id='bottom'
-
 [org/mate/panel/objects/object-9]
 applet-iid='DockAppletFactory::DockApplet'
 locked=true
@@ -340,7 +371,7 @@ multi-ind=false
 panel-act-list=false
 pinned-apps-on-all-workspaces=false
 popup-delay=1000
-saved-configs=@as []
+saved-configs=['"Workspace 1,Workspace 1"']
 theme=3
 use-win-list=true
 win-from-cur-workspace-only=false
@@ -370,21 +401,44 @@ type='none'
 background-pattern='none'
 bottom-panel-size=140
 color-scheme='tango'
-history-search-for=['budgie']
+history-search-for=['6931db305d9529d2030d58e5', '699f3af8a5cc2b14e50cf7fe', 'budgie']
 side-pane-visible=true
 side-panel-active-page=-1970755255
 side-panel-size=200
 size=(1482, 869)
-state=128
+state=0
 statusbar-visible=true
 toolbar-visible=false
 
+[org/mate/pluma/plugins/filebrowser/on-load]
+root='file:///'
+tree-view=false
+virtual-root='file:///media/dgv/4de44ea4-9147-497c-8412-2b5892d36ec7/home/dgv/Projects/dgv.github.io'
+
 [org/mate/power-manager]
-button-lid-ac='suspend'
+action-critical-battery='hibernate'
+brightness-ac=100.0
+button-lid-ac='nothing'
+button-lid-battery='nothing'
 button-power='interactive'
 button-suspend='nothing'
 icon-policy='present'
+info-history-type='charge'
+info-last-device='/org/freedesktop/UPower/devices/line_power_AC'
+info-stats-type='charge-data'
 sleep-display-ac=0
+
+[org/mate/screensaver]
+mode='blank-only'
+picture-filename='/usr/share/images/desktop-base/desktop-background'
+themes=@as []
+
+[org/mate/screenshot]
+border-effect='none'
+delay=0
+include-border=true
+include-pointer=true
+last-save-directory='file:///home/dgv/Desktop'
 
 [org/mate/search-tool/select]
 contains-the-text=true
@@ -399,22 +453,22 @@ use-system-color=true
 use-system-font=true
 
 [org/mate/system-monitor]
-current-tab=3
+current-tab=0
 maximized=false
-window-state=(700, 523, 50, 50)
+window-state=(797, 523, 991, 139)
 
 [org/mate/system-monitor/disktreenew]
 col-7-width=300
 
 [org/mate/system-monitor/proctree]
-col-26-width=131
+col-26-width=228
 
 [org/mate/terminal/profiles/default]
 allow-bold=false
 background-color='#2E2E34344040'
 bold-color='#000000000000'
 default-show-menubar=false
-font='JetBrains Mono Medium 12'
+font='Maple Mono NF Medium 12'
 foreground-color='#D8D8DEDEE9E9'
 palette='#3B3B42425252:#BFBF61616A6A:#A3A3BEBE8C8C:#EBEBCBCB8B8B:#8181A1A1C1C1:#B4B48E8EADAD:#8888C0C0D0D0:#E5E5E9E9F0F0:#4C4C56566A6A:#BFBF61616A6A:#A3A3BEBE8C8C:#EBEBCBCB8B8B:#8181A1A1C1C1:#B4B48E8EADAD:#8F8FBCBCBBBB:#ECECEFEFF4F4'
 scrollback-unlimited=true
