@@ -4,20 +4,19 @@
 
 I miss the old days running Lubuntu with LXDE (old one, not LXQT), a lite desktop environment on stable linux distribution, nowadays most distributions require 4GB of RAM, any GNOME/KDE plasma environment consumes ~1.5GB of RAM, LXDE/QT or IceWM became clunky/clumsy, XFCE not support tiling natively, Zorin Lite was deprecated and not support arm64, also don't wanna go full on tiling environments using sway or hyprland...
 
+_update_ migrated to FreeBSD
+
 expectations
-- ~700MB memory footprint
+- <1GB memory footprint
 - tiling support
 - dark/light theme
-- familiar UI/shortcuts etc (from win/macos)
+- familiar UI/shortcuts etc (from win/macos ux)
 
 requirements
-- debian 13 (trixie) or armbian
+- FreeBSD last production release (tested on 14.4 and 15)
 - amd64 or aarch64 device
 - 2GB of RAM 
-- 5GB of disk space
-
-## boot (simple plymouth theme)
-![boot](/boot.png)
+- 6GB of disk space
 
 ## login (lightdm using slick-greeter)
 ![login](/login.png)
@@ -45,33 +44,11 @@ requirements
 
 - manage logitech devices using solaar
 - ready for mobile internet connection via usb
-- added non-free repos
 
 ## installation
 
-Just install debian as usual, on software selection choose `SSH server` and `standard system utilities`, then after first reboot run as root:
+Just install freebsd as usual, on software selection choose `SSH server` and `standard system utilities`, then after first reboot run as root:
 
 ```bash
-wget -O - https://dgv.dev.br/ombian/setup.sh | bash
-```
-
-## bonus
-
-Some flatpaks apps
-- Arduino IDE
-- VSCodium: hardened VSCode 
-- Popsicle: USB flasher
-- GeForce(NOW) Infinity: Access games platforms
-- Discord
-- Obsidian
-- Ente Photos
-
-```bash
-wget -O - https://dgv.dev.br/ombian/flatpaks.sh | bash
-```
-
-Development tools 
-
-```bash
-wget -O - https://dgv.dev.br/ombian/dev.sh | bash
+wget -O - https://dgv.dev.br/ombsd/setup.sh | sh
 ```
