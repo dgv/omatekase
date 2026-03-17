@@ -1,4 +1,4 @@
-# ombian
+# ombsd
 
 ## motivation
 
@@ -40,15 +40,10 @@ requirements
 - Word Processor: AbiWord
 - Spreadsheet: Gnumeric
 
-## extra capababilities
-
-- manage logitech devices using solaar
-- ready for mobile internet connection via usb
-
 ## installation
 
-Just install freebsd as usual, on software selection choose `SSH server` and `standard system utilities`, then after first reboot run as root:
+Just install freebsd as usual and add a standard user (default uid), then after first reboot run as root:
 
 ```bash
-wget -O - https://dgv.dev.br/ombsd/setup.sh | sh
+fetch -o - https://dgv.dev.br/ombsd/setup.sh | sh
 ```

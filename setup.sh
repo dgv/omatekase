@@ -39,8 +39,8 @@ pw groupmod wheel -m $SUSER
 echo 'eval "$(starship init bash)"' >> /home/$SUSER/.bashrc
 # setup login dm
 chsh -s /usr/local/bin/bash $SUSER
-sed -i 's/^[#g]reeter-session=.*$/greeter-session=slick-greeter/g' /usr/local/etc/lightdm/lightdm.conf
-echo 'permit $SUSER as root' > /usr/local/etc/doas.conf
+sed -i '' -E 's/#greeter-session=.*/greeter-session=slick-greeter/' /usr/local/etc/lightdm/lightdm.conf
+echo "permit $SUSER as root" > /usr/local/etc/doas.conf
 cat << EOF > /usr/local/etc/lightdm/slick-greeter.conf
 [Greeter]
 theme-name=Arc-Dark
@@ -53,8 +53,9 @@ EOF
 rm -rf /home/$SUSER/.config; su $SUSER -c 'git clone https://github.com/dgv/ombian -b dotfiles /home/$SUSER/.config'
 su $SUSER -c 'mkdir -p ~/.local/share'; mv /home/$SUSER/.config/fonts /home/$SUSER/.local/share; su $SUSER -c 'fc-cache -vf'
 mv /home/$SUSER/.config/*.png /usr/local/share/backgrounds/
+service dbus start
 su $SUSER -c 'dbus-launch dconf load / < ~/.config/dconf.backup'
 
 echo "setup done. rebooting..."
 sleep 3
-/usr/sbin/reboot
+/sbin/reboot
