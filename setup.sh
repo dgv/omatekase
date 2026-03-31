@@ -57,7 +57,7 @@ EOF
 
 # fetch config/theme
 rm -rf /home/$SUSER/.config; su $SUSER -c 'git clone https://github.com/dgv/ombian -b dotfiles /home/$SUSER/.config'
-su $SUSER -c 'mkdir -p ~/.local/usr/share'; mv /home/$SUSER/.config/fonts /home/$SUSER/.local/user/share/
+su $SUSER -c 'mkdir -p ~/.local/share'; mv /home/$SUSER/.config/fonts /home/$SUSER/.local/share; su $SUSER -c 'fc-cache -vf'
 mv /home/$SUSER/.config/*.png /usr/share/images/desktop-base/
 su $SUSER -c 'dconf load / < ~/.config/dconf.backup'
 
