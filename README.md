@@ -1,10 +1,8 @@
-# ombsd
+# omatekase
 
 ## motivation
 
 I miss the old days running Lubuntu with LXDE (old one, not LXQT), a lite desktop environment on stable linux distribution, nowadays most distributions require 4GB of RAM, any GNOME/KDE plasma environment consumes ~1.5GB of RAM, LXDE/QT or IceWM became clunky/clumsy, XFCE not support tiling natively, Zorin Lite was deprecated and not support arm64, also don't wanna go full on tiling environments using sway or hyprland...
-
-_update_ migrated to FreeBSD
 
 expectations
 - <1GB memory footprint
@@ -13,10 +11,13 @@ expectations
 - familiar UI/shortcuts etc (from win/macos ux)
 
 requirements
-- FreeBSD last production release (tested on 14.4 and 15)
+- Debian / FreeBSD last stable release
 - amd64 or aarch64 device
 - 2GB of RAM 
 - 6GB of disk space
+
+## boot (simple plymouth theme)
+![boot](/boot.png)
 
 ## login (lightdm using slick-greeter)
 ![login](/login.png)
@@ -42,8 +43,8 @@ requirements
 
 ## installation
 
-Just install freebsd as usual and add a standard user (default uid), then after first reboot run as root:
+Just install as usual and add a standard user (default uid 1000), then after first reboot run as root:
 
 ```bash
-fetch -o - https://dgv.dev.br/ombsd/setup.sh | sh
+fetch -o - https://dgv.dev.br/omatekase/setup.sh | sh
 ```
