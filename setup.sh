@@ -67,6 +67,9 @@ EOF
         echo "permit $SUSER as root" > /usr/local/etc/doas.conf
         sed -i '' -E 's/#greeter-session=.*/greeter-session=slick-greeter/' $LIGHTDM_CONF
     ;;
+    OpenBSD*)
+	
+    ;;
     *)  echo "$OS not supported"; exit 1;;
 esac
 
