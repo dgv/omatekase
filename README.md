@@ -11,7 +11,7 @@ expectations
 - familiar UI/shortcuts etc (from win/macos ux)
 
 requirements
-- Debian / FreeBSD last stable release
+- Alpine / OpenBSD last stable release
 - amd64 or aarch64 device
 - 2GB of RAM 
 - 6GB of disk space
@@ -30,7 +30,6 @@ requirements
 ## default apps
 
 - Web browser: LibreWolf
-- Mail Reader: Geary
 - Image Viewer: Eye 
 - Media Player: mpv
 - Text Editor: Pluma
@@ -46,5 +45,5 @@ requirements
 Just install as usual and add a standard user (default uid 1000), then after first reboot run as root:
 
 ```bash
-fetch -o - https://dgv.dev.br/omatekase/setup.sh | sh
+wget -O - https://dgv.dev.br/omatekase/setup.sh | sh
 ```
