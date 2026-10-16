@@ -6,7 +6,7 @@ lock-on-lid=false
 lock-on-suspend=true
 
 [ca/desrt/dconf-editor]
-relocatable-schemas-user-paths={'ca.desrt.dconf-editor.Demo.Relocatable': '/ca/desrt/dconf-editor/Demo/relocatable/', 'org.mate.panel.applet.window-list-previews': '/org/mate/panel/objects/window-list/prefs/', 'org.mate.panel.applet.workspace-switcher': '/org/mate/panel/objects/workspace-switcher/prefs/', 'org.mate.panel.applet.notification-area': '/org/mate/panel/objects/notification-area/prefs/', 'org.mate.panel.applet.clock': '/org/mate/panel/objects/clock/prefs/', 'org.mate.panel.applet.clock': '/org/mate/panel/objects/object-11/prefs/', 'org.mate.panel.applet.notification-area': '/org/mate/panel/objects/object-3/prefs/', 'org.mate.panel.applet.multiload': '/org/mate/panel/objects/object-2/prefs/'}
+relocatable-schemas-user-paths={'ca.desrt.dconf-editor.Demo.Relocatable': '/ca/desrt/dconf-editor/Demo/relocatable/', 'org.mate.panel.applet.window-list-previews': '/org/mate/panel/objects/window-list/prefs/', 'org.mate.panel.applet.workspace-switcher': '/org/mate/panel/objects/workspace-switcher/prefs/', 'org.mate.panel.applet.notification-area': '/org/mate/panel/objects/notification-area/prefs/', 'org.mate.panel.applet.clock': '/org/mate/panel/objects/clock/prefs/', 'org.mate.panel.applet.clock': '/org/mate/panel/objects/object-11/prefs/', 'org.mate.panel.applet.notification-area': '/org/mate/panel/objects/object-3/prefs/', 'org.mate.panel.applet.multiload': '/org/mate/panel/objects/object-2/prefs/', 'org.mate.panel.applet.window-list-previews': '/org/mate/panel/objects/object-0/prefs/'}
 saved-pathbar-path='/org/mate/panel/objects/object-1/has-arrow'
 saved-view='/org/mate/panel/objects/object-1/'
 show-warning=false
@@ -131,13 +131,16 @@ location-mode='path-bar'
 show-hidden=true
 show-size-column=true
 show-type-column=true
-sidebar-width=162
+sidebar-width=189
 sort-column='name'
 sort-directories-first=false
 sort-order='descending'
 type-format='category'
-window-position=(412, 84)
-window-size=(1096, 856)
+window-position=(92, 0)
+window-size=(1096, 747)
+
+[org/mate/caja/desktop]
+font='Cantarell 10'
 
 [org/mate/caja/list-view]
 default-column-order=['name', 'size', 'type', 'date_modified', 'date_accessed', 'date_created', 'extension', 'group', 'where', 'mime_type', 'octal_permissions', 'owner', 'permissions', 'selinux_context', 'size_on_disk']
@@ -149,7 +152,7 @@ show-image-thumbnails='always'
 thumbnail-limit=uint64 4294967295
 
 [org/mate/caja/window-state]
-geometry='1521x911+199+57'
+geometry='1270x738+0+0'
 maximized=false
 start-with-location-bar=true
 start-with-sidebar=true
@@ -196,13 +199,15 @@ exec='mate-terminal'
 
 [org/mate/desktop/background]
 color-shading-type='vertical-gradient'
-picture-filename='/usr/local/share/backgrounds/ghibli_mononoke.png'
-picture-options='zoom'
+picture-filename='/usr/share/backgrounds/ghibli_mononoke.png'
+picture-options='stretched'
 primary-color='rgb(88,145,188)'
 secondary-color='rgb(60,143,37)'
 
 [org/mate/desktop/interface]
+document-font-name='Cantarell 10'
 enable-animations=true
+font-name='Cantarell 10'
 gtk-color-scheme='menu_bg: #ffffff'
 gtk-decoration-layout='menu:minimize,maximize,close'
 gtk-theme='Arc-Lighter'
@@ -240,7 +245,7 @@ cursor-size=24
 cursor-theme='default'
 
 [org/mate/desktop/session]
-session-start=1791582489
+session-start=1792122120
 
 [org/mate/desktop/session/required-components]
 dock='plank'
@@ -291,6 +296,7 @@ center-new-windows=true
 compositing-manager=true
 num-workspaces=2
 theme='Arc-Lighter'
+titlebar-font='Cantarell Bold 10'
 
 [org/mate/marco/global-keybindings]
 run-command-terminal='<Mod4>t'
@@ -301,7 +307,7 @@ popup-location='bottom_right'
 theme='slider'
 
 [org/mate/panel/general]
-object-id-list=['workspace-switcher', 'object-11', 'object-2', 'object-3', 'object-6', 'object-1', 'object-0', 'object-4', 'object-5']
+object-id-list=['workspace-switcher', 'object-11', 'object-2', 'object-3', 'object-1', 'object-0', 'object-4', 'object-5']
 toplevel-id-list=['bottom']
 
 [org/mate/panel/objects/object-0]
@@ -329,7 +335,8 @@ applet-iid='ClockAppletFactory::ClockApplet'
 has-arrow=false
 locked=true
 object-type='applet'
-position=0
+panel-right-stick=true
+position=102
 relative-to-edge='end'
 toplevel-id='bottom'
 
@@ -344,7 +351,8 @@ show-date=true
 applet-iid='MultiLoadAppletFactory::MultiLoadApplet'
 locked=false
 object-type='applet'
-position=1645
+panel-right-stick=true
+position=273
 relative-to-edge='start'
 toplevel-id='bottom'
 
@@ -366,9 +374,10 @@ view-netload=false
 
 [org/mate/panel/objects/object-3]
 applet-iid='NotificationAreaAppletFactory::NotificationArea'
-locked=true
+locked=false
 object-type='applet'
-position=114
+panel-right-stick=true
+position=189
 relative-to-edge='end'
 toplevel-id='bottom'
 
@@ -410,7 +419,7 @@ expand=true
 orientation='bottom'
 screen=0
 size=26
-y=1054
+y=774
 y-bottom=0
 
 [org/mate/panel/toplevels/bottom/background]
