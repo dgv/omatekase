@@ -67,19 +67,49 @@ extlinux_ensure_opts() {
   if [ ! -f "$_conf" ]; then
     return 0
   fi
-  _cur=$(sed -n -E 's/^[[:space:]]*default_kernel_opts=+[[:space:]]*//p' "$_conf" | tail -n 1)
+  _cur=$(sed -n -E 's/^[[:space:]]*default_kernel_opts=[[:space:]]*//p' "$_conf" | tail -n 1)
   _cur=$(printf '%s' "$_cur" | sed -e 's/^=//' -e 's/^"//' -e 's/"$//' -e "s/^'//" -e "s/'\$//")
   for _tok in "$@"; do
     _cur=$(printf '%s' "$_cur" | sed -E -e "s/(^|[[:space:]])${_tok}([[:space:]]|\$)/ /g" -e 's/  */ /g' -e 's/^ //' -e 's/ $//')
   done
   _new="$_cur $*"
   _new=$(printf '%s' "$_new" | sed -e 's/  */ /g' -e 's/^ //' -e 's/ $//')
-  if grep -qE '^[[:space:]]*default_kernel_opts=+' "$_conf"; then
+  if grep -qE '^[[:space:]]*default_kernel_opts=' "$_conf"; then
     sed -i -E "s|^[[:space:]]*default_kernel_opts=.*|default_kernel_opts=\"$_new\"|" "$_conf"
   else
     printf 'default_kernel_opts="%s"\n' "$_new" >> "$_conf"
   fi
   unset _conf _cur _new _tok
+}
+
+grub_ensure_opts() {
+  _conf="$1"; shift
+  if [ ! -f "$_conf" ]; then
+    return 0
+  fi
+  _cur=$(sed -n -E 's/^[[:space:]]*GRUB_CMDLINE_LINUX_DEFAULT=[[:space:]]*//p' "$_conf" | tail -n 1)
+  _cur=$(printf '%s' "$_cur" | sed -e 's/^=//' -e 's/^"//' -e 's/"$//' -e "s/^'//" -e "s/'\$//")
+  for _tok in "$@"; do
+    _cur=$(printf '%s' "$_cur" | sed -E -e "s/(^|[[:space:]])${_tok}([[:space:]]|\$)/ /g" -e 's/  */ /g' -e 's/^ //' -e 's/ $//')
+  done
+  _new="$_cur $*"
+  _new=$(printf '%s' "$_new" | sed -e 's/  */ /g' -e 's/^ //' -e 's/ $//')
+  if grep -qE '^[[:space:]]*GRUB_CMDLINE_LINUX_DEFAULT=' "$_conf"; then
+    sed -i -E "s|^[[:space:]]*GRUB_CMDLINE_LINUX_DEFAULT=.*|GRUB_CMDLINE_LINUX_DEFAULT=\"$_new\"|" "$_conf"
+  else
+    printf 'GRUB_CMDLINE_LINUX_DEFAULT="%s"\n' "$_new" >> "$_conf"
+  fi
+  unset _conf _cur _new _tok
+}
+
+grub_regen_cfg() {
+  if command -v update-grub >/dev/null 2>&1; then
+    update-grub || echo "warning: update-grub failed" >&2
+  elif command -v grub-mkconfig >/dev/null 2>&1; then
+    grub-mkconfig -o /boot/grub/grub.cfg || echo "warning: grub-mkconfig failed" >&2
+  else
+    echo "note: no update-grub/grub-mkconfig found, skipping GRUB cfg regen" >&2
+  fi
 }
 
 lightdm_set_greeter() {
@@ -98,10 +128,10 @@ mkinitfs_ensure_features() {
   _conf="/etc/mkinitfs/mkinitfs.conf"
   [ -f "$_conf" ] || return 0
   for _feat in "$@"; do
-    if ! grep -qE "^features=.*\\b${_feat}\\b" "$_conf"; then
+    if ! grep -qE "^features=.*(^|[[:space:]\"])"${_feat}"([[:space:]\"]|\$)" "$_conf"; then
       if grep -q '^features=' "$_conf"; then
         sed -i -e "s/^features=\"\(.*\)\"/features=\"\1 ${_feat}\"/" \
-               -e 's/  */ /g' -e 's/ "/"/' "$_conf"
+               -e 's/  */ /g' -e 's/" /"/' -e 's/ ""/""/' "$_conf"
       else
         echo "features=\"${_feat}\"" >> "$_conf"
       fi
@@ -164,7 +194,7 @@ setup_gpu_alpine() {
   fi
   if [ "$_is_amd" -eq 1 ]; then
     echo "GPU: AMD/ATI detected"
-    _gpu_pkgs="$_gpu_pkgs xf86-video-amdgpu xf86-video-ati linux-firmware-amdgpu linux-firmware-radeon mesa-vulkan-radeon"
+    _gpu_pkgs="$_gpu_pkgs xf86-video-amdgpu xf86-video-ati linux-firmware-amdgpu linux-firmware-radeon mesa-vulkan-ati"
   fi
   if [ "$_is_vbox" -eq 1 ]; then
     echo "GPU: VirtualBox detected"
@@ -193,13 +223,14 @@ setup_plymouth_alpine() {
   else
     [ ! -e "$THEME_DIR" ] || rm -rf "$THEME_DIR"
     echo "installing plymouth theme $THEME ..."
-    git clone https://github.com/dgv/simplefuture "$THEME_DIR" \
+    git clone --depth 1 https://github.com/dgv/simplefuture "$THEME_DIR" \
       || echo "warning: could not clone plymouth theme" >&2
   fi
 
   if [ -f "$THEME_DIR/$THEME.plymouth" ] && command -v plymouth-set-default-theme >/dev/null 2>&1; then
     echo "setting plymouth theme to $THEME ..."
     # -R rebuilds initramfs on distros that support it; fall back gracefully.
+    # On Alpine mkinitfs is rebuilt explicitly below.
     plymouth-set-default-theme "$THEME" -R \
       || plymouth-set-default-theme "$THEME" \
       || echo "warning: plymouth-set-default-theme failed" >&2
@@ -209,12 +240,22 @@ setup_plymouth_alpine() {
 
   _pconf="/etc/plymouth/plymouthd.conf"
   if [ -f "$_pconf" ]; then
+    if ! grep -q '^\[Daemon\]' "$_pconf"; then
+      printf '[Daemon]\n' >> "$_pconf"
+    fi
     if grep -qE '^[# ]*ShowDelay=' "$_pconf"; then
       sed -i -E 's/^[# ]*ShowDelay=.*/ShowDelay=0/' "$_pconf"
-    elif grep -q '^\[Daemon\]' "$_pconf"; then
-      sed -i -E '/^\[Daemon\]/a ShowDelay=0' "$_pconf"
     else
-      printf '[Daemon]\nShowDelay=0\n' >> "$_pconf"
+      sed -i -E '/^\[Daemon\]/a ShowDelay=0' "$_pconf"
+    fi
+    # Fallback when plymouth-set-default-theme is unavailable/fails:
+    # ensure Theme= points at the installed theme.
+    if grep -qE '^[# ]*Theme=' "$_pconf"; then
+      if ! grep -qE "^Theme=${THEME}$" "$_pconf"; then
+        echo "note: $_pconf Theme entry differs from '$THEME', leaving as-is" >&2
+      fi
+    else
+      sed -i -E "/^\\[Daemon\\]/a Theme=$THEME" "$_pconf"
     fi
   else
     echo "warning: $_pconf missing, theme may not be activated" >&2
@@ -224,6 +265,8 @@ setup_plymouth_alpine() {
   mkinitfs_ensure_features kms
   mkinitfs_rebuild
 
+  # Bootloader kernel cmdline: extlinux (default on BIOS Alpine),
+  # GRUB (/etc/default/grub), and UKI secureboot hook.
   if [ -f /etc/update-extlinux.conf ]; then
     extlinux_ensure_opts /etc/update-extlinux.conf quiet splash
     if command -v update-extlinux >/dev/null 2>&1; then
@@ -231,9 +274,16 @@ setup_plymouth_alpine() {
     fi
   fi
 
+  if [ -f /etc/default/grub ]; then
+    grub_ensure_opts /etc/default/grub quiet splash
+    grub_regen_cfg
+  fi
+
   if [ -f /etc/kernel-hooks.d/secureboot.conf ]; then
-    if ! grep -q '\bquiet\b' /etc/kernel-hooks.d/secureboot.conf; then
+    if ! grep -qw 'quiet' /etc/kernel-hooks.d/secureboot.conf; then
       echo 'note: add "quiet splash" to /etc/kernel-hooks.d/secureboot.conf cmdline, then run update-kernel' >&2
+    elif ! grep -qw 'splash' /etc/kernel-hooks.d/secureboot.conf; then
+      echo 'note: add "splash" to /etc/kernel-hooks.d/secureboot.conf cmdline, then run update-kernel' >&2
     fi
   fi
 
@@ -256,15 +306,15 @@ setup_plymouth_alpine() {
 case "$OS" in
     Linux*)
         if [ ! -f /etc/alpine-release ]; then
-          echo "Linux branch supports Alpine Linux only (no GRUB). /etc/alpine-release not found." >&2
+          echo "Linux branch supports Alpine Linux only (extlinux/GRUB). /etc/alpine-release not found." >&2
           exit 1
         fi
 
         setup_apk_repos_alpine
         apk update; setup-xorg-base mate-desktop-environment flatpak \
-          mpv lightdm dconf dpkg lightdm-openrc wget \
+          mpv atril eom engrampa lightdm dconf dpkg lightdm-openrc wget \
           htop slick-greeter git papirus-icon-theme font-cantarell \
-          cups cups-openrc system-config-printer librewolf starship atril eom \
+          cups cups-openrc system-config-printer librewolf starship \
           gparted networkmanager network-manager-applet networkmanager-openrc \
           abiword gnumeric fastfetch plymouth plymouth-drm plymouth-openrc-plugin \
           rclone rofi wpa_supplicant libimobiledevice-progs blueman \
